@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisTrackerTests", "RegisTrackerTests\RegisTrackerTests.csproj", "{D52EC3EF-73AC-4727-95CB-29BD442E852C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisTrackerSystem", "RegisTrackerSystem\RegisTrackerSystem.csproj", "{8DEC9B00-E9EA-409F-937E-6E943B6A43D1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D52EC3EF-73AC-4727-95CB-29BD442E852C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D52EC3EF-73AC-4727-95CB-29BD442E852C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D52EC3EF-73AC-4727-95CB-29BD442E852C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D52EC3EF-73AC-4727-95CB-29BD442E852C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DEC9B00-E9EA-409F-937E-6E943B6A43D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DEC9B00-E9EA-409F-937E-6E943B6A43D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DEC9B00-E9EA-409F-937E-6E943B6A43D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DEC9B00-E9EA-409F-937E-6E943B6A43D1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2108B85C-4443-410A-AF26-5749D9D5D384}
+	EndGlobalSection
+EndGlobal
