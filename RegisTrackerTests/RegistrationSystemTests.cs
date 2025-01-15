@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using RegisTrackerSystem;
 
-namespace RegisTrackerTests; 
+namespace RegisTrackerTests;
 
 /// <summary>
 /// Test list:
@@ -16,27 +16,33 @@ namespace RegisTrackerTests;
 public class RegistrationSystemTests
 {
     private readonly FakeRepository<Individual> fakeIndividualRepository = new();
+    private readonly FakeRepository<BatchStatistics> fakeBatchStatisticsRepository = new();
     private readonly RegisTracker sut;
     public RegistrationSystemTests()
     {
-        sut = new(fakeIndividualRepository);
+        sut = new(fakeIndividualRepository, fakeBatchStatisticsRepository);
     }
 
-    [Fact]
-    public void WhenRegisterInterestCommandIsTriggeredOnce_StatisticsAreReflected()
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    public void WhenRegisterInterestCommandIsTriggered_StatisticsAreReflected(int repetitions)
     {
-        var registerInterestCommand = new RegisterInterestCommand("aperson@example.com", 2000);
+        for (int i = 0; i < repetitions; i++)
+        {
+            var registerInterestCommand = new RegisterInterestCommand($"aperson{i}@example.com", 2000);
+            sut.Handle(registerInterestCommand);
+        }
 
-        sut.Handle(registerInterestCommand);
         var result = sut.GetStatistics();
 
 
-        result.Batches.Should().ContainSingle();
-        result.Batches.First(x=>x.Year == 2000).Count.Should().Be(1);
+        result.BatchCount[2000].Should().Be(repetitions);
     }
 
     [Theory]
     [InlineData(2)]
+    [InlineData(3)]
     public void WhenRegisteringInterestMoreThanOnce_ThrowsException(int repetitions)
     {
         var registerInterestCommand = new RegisterInterestCommand("aperson@example.com", 2000);
@@ -50,16 +56,35 @@ public class RegistrationSystemTests
         }
     }
 
+    [Fact]
+    public void WhenInterestIsRegisteredForASpecificYear_StatisticsShouldReflectThat()
+    {
+        var registerInterestCommand = new RegisterInterestCommand("person@example.com", 2000);
+        sut.Handle(registerInterestCommand);
+        registerInterestCommand = new RegisterInterestCommand("anotherperson@example.com", 2001);
+        sut.Handle(registerInterestCommand);
+
+        var statistics = sut.GetStatistics();
+
+        statistics.BatchCount[2000].Should().Be(1);
+        statistics.BatchCount[2001].Should().Be(1);
+        statistics.Total.Should().Be(2);
+
+    }
+
 }
 public class FakeRepository<T> : IRepository<T> where T : class
 {
     public List<T> Entities { get; } = new();
     public void Save(T entity)
     {
-        Entities.Add(entity);
+        if (!Entities.Contains(entity))
+        {
+            Entities.Add(entity);
+        }
     }
     public IEnumerable<T> GetAll()
     {
         return Entities;
     }
-}   
+}

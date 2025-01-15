@@ -1,13 +1,24 @@
 ﻿namespace RegisTrackerSystem;
 public record RegisterInterestCommand(string Email, int Year);
-public record RegistrationStatistics(int Total, IEnumerable<BatchStatistics> Batches);
-public record BatchStatistics(int Year, int Count);
-
-internal class RegisTracker(IRepository<Individual> individuals)
+public record RegistrationStatistics(int Total, Dictionary<int, int> BatchCount);
+public class BatchStatistics
+{
+    public BatchStatistics(int year, int count)
+    {
+        Year = year;
+        Count = count;
+    }
+    public int Year { get; }
+    public int Count { get; private set; }
+    public void Increment() => Count++;
+}
+internal class RegisTracker(IRepository<Individual> individuals, IRepository<BatchStatistics> statistics)
 {
     public RegistrationStatistics GetStatistics()
     {
-        return new RegistrationStatistics(0, new List<BatchStatistics>() { new BatchStatistics(2000, 1) });
+        var all = statistics.GetAll();
+        var total = all.Sum(x => x.Count);
+        return new RegistrationStatistics(total, all.ToDictionary(x=>x.Year, y=>y.Count));
     }
 
     public void Handle(RegisterInterestCommand interest)
@@ -20,6 +31,11 @@ internal class RegisTracker(IRepository<Individual> individuals)
         {
             Email = interest.Email,
         });
+
+        var statistic = statistics.GetAll().FirstOrDefault(x => x.Year ==  interest.Year) 
+            ?? new BatchStatistics(interest.Year, 0);
+        statistic.Increment();
+        statistics.Save(statistic);
     }
 }
 
