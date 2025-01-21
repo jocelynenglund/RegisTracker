@@ -13,6 +13,11 @@ internal record Individual()
     public string Email { get; internal set; }
     public Status Status { get; internal set; }
 
+    internal void RegisterInterest(string email, int year)
+    {
+        Apply(new InterestRegistered(email, year));
+    }
+
     internal void ConfirmRegistration()
     {
         if (Status != Status.InterestSubmitted)
@@ -22,12 +27,6 @@ internal record Individual()
                 :"Email not registered");
         }
         Apply(new RegistrationConfirmed(Email));
-    }
-
-
-    internal void RegisterInterest(string email, int year)
-    {
-        Apply(new InterestRegistered(email, year));
     }
 
     private void Apply(InterestRegistered interestRegistered)
