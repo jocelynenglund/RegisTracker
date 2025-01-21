@@ -1,17 +1,5 @@
 ﻿namespace RegisTrackerSystem;
 public record RegisterInterestCommand(string Email, int Year);
-public record RegistrationStatistics(int Total, Dictionary<int, int> BatchCount);
-public class BatchStatistics
-{
-    public BatchStatistics(int year, int count)
-    {
-        Year = year;
-        Count = count;
-    }
-    public int Year { get; }
-    public int Count { get; private set; }
-    public void Increment() => Count++;
-}
 internal class RegisTracker(IRepository<Individual> individuals, IRepository<BatchStatistics> statistics)
 {
     public RegistrationStatistics GetStatistics()
@@ -37,11 +25,6 @@ internal class RegisTracker(IRepository<Individual> individuals, IRepository<Bat
         statistic.Increment();
         statistics.Save(statistic);
     }
-}
-
-internal record Individual()
-{
-    public string Email { get; internal set; }
 }
 internal interface IRepository<T> where T : class
 {
