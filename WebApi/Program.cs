@@ -24,15 +24,15 @@ app.UseHttpsRedirection();
 
 app.MapPost("/registerInterest", async (RegisterInterestCommand command, RegisTracker registracker) =>
 {
-	try
-	{
-		registracker.Handle(command);
+    try
+    {
+        registracker.Handle(command);
         return Results.Ok("Interest registered successfully");
     }
-	catch (InvalidOperationException e)
-	{
-		return Results.BadRequest(e.Message);
-	}
+    catch (InvalidOperationException e)
+    {
+        return Results.BadRequest(e.Message);
+    }
 })
 .WithName("Register Interest");
 
@@ -53,3 +53,5 @@ public class FakeRepository<T> : IRepository<T> where T : class
         return Entities;
     }
 }
+
+public partial class Program { }

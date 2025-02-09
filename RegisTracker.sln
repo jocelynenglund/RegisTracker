@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisTrackerTests", "RegisT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisTrackerSystem", "RegisTrackerSystem\RegisTrackerSystem.csproj", "{8DEC9B00-E9EA-409F-937E-6E943B6A43D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{5215C0E0-D76A-45BD-8C88-5C92182EFC04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{78A62672-7007-45FD-8846-BA69A9B312A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{8DEC9B00-E9EA-409F-937E-6E943B6A43D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DEC9B00-E9EA-409F-937E-6E943B6A43D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DEC9B00-E9EA-409F-937E-6E943B6A43D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5215C0E0-D76A-45BD-8C88-5C92182EFC04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5215C0E0-D76A-45BD-8C88-5C92182EFC04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5215C0E0-D76A-45BD-8C88-5C92182EFC04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5215C0E0-D76A-45BD-8C88-5C92182EFC04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78A62672-7007-45FD-8846-BA69A9B312A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78A62672-7007-45FD-8846-BA69A9B312A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78A62672-7007-45FD-8846-BA69A9B312A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78A62672-7007-45FD-8846-BA69A9B312A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
