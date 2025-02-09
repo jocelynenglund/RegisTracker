@@ -1,6 +1,6 @@
 ﻿namespace RegisTrackerSystem;
 public record RegisterInterestCommand(string Email, int Year);
-internal class RegisTracker(IRepository<Individual> individuals, IRepository<BatchStatistics> statistics)
+public class RegisTracker(IRepository<Individual> individuals, IRepository<BatchStatistics> statistics)
 {
     public RegistrationStatistics GetStatistics()
     {
@@ -26,7 +26,7 @@ internal class RegisTracker(IRepository<Individual> individuals, IRepository<Bat
         statistics.Save(statistic);
     }
 }
-internal interface IRepository<T> where T : class
+public interface IRepository<T> where T : class
 {
     void Save(T entity);
     IEnumerable<T> GetAll();

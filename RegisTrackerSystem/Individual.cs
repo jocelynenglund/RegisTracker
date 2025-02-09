@@ -1,6 +1,6 @@
 ﻿namespace RegisTrackerSystem;
 
-internal record Individual()
+public record Individual()
 {
     public Individual(List<DomainEvent> previousEvents) : this()
     {

@@ -1,0 +1,11 @@
+@WebApi_HostAddress = http://localhost:5092
+
+POST {{WebApi_HostAddress}}/registerinterest/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "jocelyn@englund.com",
+  "year": 2000
+}
+###
