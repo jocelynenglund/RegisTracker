@@ -1,4 +1,6 @@
-﻿namespace RegisTrackerSystem;
+﻿using RegisTrackerSystem.Domain;
+
+namespace RegisTrackerSystem;
 public record RegisterInterestCommand(string Email, int Year);
 public class RegisTracker(IRepository<Individual> individuals, IRepository<BatchStatistics> statistics)
 {

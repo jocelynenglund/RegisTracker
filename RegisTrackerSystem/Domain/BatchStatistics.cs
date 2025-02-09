@@ -1,10 +1,10 @@
-﻿namespace RegisTrackerSystem;
-public class BatchStatistics: AggregateRoot
+﻿namespace RegisTrackerSystem.Domain;
+public class BatchStatistics : AggregateRoot
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public BatchStatistics()
     {
-        
+
     }
     public BatchStatistics(int year, int count)
     {

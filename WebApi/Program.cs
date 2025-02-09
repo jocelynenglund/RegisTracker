@@ -1,7 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using RegisTrackerSystem;
 using Infrastructure;
-using Microsoft.Extensions.Options;
+using Infrastructure.SQLAdapter.Migrations;
+using RegisTrackerSystem;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,12 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-// Register the AppDbContext with the dependency injection container
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddScoped(typeof(IRepository<>), typeof(SQLRepository<>));
-builder.Services.AddScoped<RegisTracker>();
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddCoreServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -23,6 +18,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
 
 app.UseHttpsRedirection();
 

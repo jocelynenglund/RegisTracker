@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Infrastructure.SQLAdapter.Migrations;
+using Microsoft.EntityFrameworkCore;
 using RegisTrackerSystem;
+using RegisTrackerSystem.Domain;
 
-namespace Infrastructure;
+namespace Infrastructure.SQLAdapter;
 
 public class SQLRepository<T> : IRepository<T> where T : class, AggregateRoot
 {

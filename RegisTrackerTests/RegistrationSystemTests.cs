@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using RegisTrackerSystem;
+using RegisTrackerSystem.Domain;
 
 namespace RegisTrackerTests;
 

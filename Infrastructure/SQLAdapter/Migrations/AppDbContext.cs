@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RegisTrackerSystem;
+using RegisTrackerSystem.Domain;
 
-namespace Infrastructure;
+namespace Infrastructure.SQLAdapter.Migrations;
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }

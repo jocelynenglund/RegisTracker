@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{E59804EB-BCEE-46DE-9E72-8873F8B1D545}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{474586EB-3B61-4895-9270-4C2A9935F4E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D52EC3EF-73AC-4727-95CB-29BD442E852C} = {474586EB-3B61-4895-9270-4C2A9935F4E0}
+		{5215C0E0-D76A-45BD-8C88-5C92182EFC04} = {474586EB-3B61-4895-9270-4C2A9935F4E0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2108B85C-4443-410A-AF26-5749D9D5D384}
