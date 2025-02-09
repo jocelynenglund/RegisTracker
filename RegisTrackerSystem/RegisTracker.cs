@@ -4,6 +4,8 @@ namespace RegisTrackerSystem;
 public record RegisterInterestCommand(string Email, int Year);
 public class RegisTracker(IRepository<Individual> individuals, IRepository<BatchStatistics> statistics)
 {
+    public const string RegistrationSuccess  = "Registration created successfully";
+    public const string RegistrationErrorExisting = "That email is already registered";
     public RegistrationStatistics GetStatistics()
     {
         var all = statistics.GetAll();
@@ -11,13 +13,13 @@ public class RegisTracker(IRepository<Individual> individuals, IRepository<Batch
         return new RegistrationStatistics(total, all.ToDictionary(x=>x.Year, y=>y.Count));
     }
 
-    public void Handle(RegisterInterestCommand interest)
+    public async Task Handle(RegisterInterestCommand interest)
     {
         if (individuals.GetAll().Any(x => x.Email == interest.Email))
         {
-            throw new InvalidOperationException("That email is already registered");
+            throw new InvalidOperationException(RegistrationErrorExisting);
         }
-        individuals.Save(new Individual()
+        await individuals.Save(new Individual()
         {
             Email = interest.Email,
         });

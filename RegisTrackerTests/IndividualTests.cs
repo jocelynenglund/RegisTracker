@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
-using RegisTrackerSystem;
+﻿using RegisTrackerSystem;
 using RegisTrackerSystem.Domain;
+using Shouldly;
 
 namespace RegisTrackerTests;
 public class IndividualTests
@@ -14,8 +14,8 @@ public class IndividualTests
 
         individual.RegisterInterest(cmd.Email, cmd.Year);
 
-        individual.Email.Should().Be(cmd.Email);
-        individual.Status.Should().Be(Status.InterestSubmitted);
+        individual.Email.ShouldBe(cmd.Email);
+        individual.Status.ShouldBe(Status.InterestSubmitted);
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class IndividualTests
 
         individual.ConfirmRegistration();
 
-        individual.Status.Should().Be(Status.RegistrationConfirmed);
+        individual.Status.ShouldBe(Status.RegistrationConfirmed);
     }
 
     [Fact]
@@ -44,10 +44,8 @@ public class IndividualTests
 
         var individual = new Individual(previousEvents);
 
-        Action act = () => individual.ConfirmRegistration();
-
-        act.Should().Throw<InvalidOperationException>()
-            .WithMessage("Email already confirmed");
+        var exception = Should.Throw<InvalidOperationException>(() => individual.ConfirmRegistration());
+        exception.Message.ShouldBe("Email already confirmed");
 
     }
 
@@ -61,9 +59,9 @@ public class IndividualTests
 
         var individual = new Individual(previousEvents);
 
-        Action act = () => individual.ConfirmRegistration();
+        var exception = Should.Throw<InvalidOperationException>(() => individual.ConfirmRegistration());
+        exception.Message.ShouldBe("Email not registered");
 
-        act.Should().Throw<InvalidOperationException>()
-            .WithMessage("Email not registered");
     }
 }
+ 

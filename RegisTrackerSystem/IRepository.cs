@@ -2,6 +2,6 @@
 
 public interface IRepository<T> where T : class
 {
-    void Save(T entity);
+    Task Save(T entity);
     IEnumerable<T> GetAll();
 }

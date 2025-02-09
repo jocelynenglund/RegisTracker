@@ -1,3 +1,4 @@
+using FastEndpoints;
 using Infrastructure;
 using Infrastructure.SQLAdapter.Migrations;
 using RegisTrackerSystem;
@@ -10,6 +11,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddCoreServices(builder.Configuration);
+builder.Services.AddFastEndpoints();
 
 var app = builder.Build();
 
@@ -22,32 +24,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/registerInterest", async (RegisterInterestCommand command, RegisTracker registracker) =>
-{
-    try
-    {
-        await Task.Run(() => registracker.Handle(command)); // Add await to fix the async warning
-        return Results.Ok("Interest registered successfully");
-    }
-    catch (InvalidOperationException e)
-    {
-        return Results.BadRequest(e.Message);
-    }
-})
-.WithName("Register Interest");
-app.MapGet("/test-connection", async (AppDbContext context) =>
-{
-    try
-    {
-        await context.Database.CanConnectAsync();
-        return Results.Ok("Connection successful");
-    }
-    catch (Exception ex)
-    {
-        return Results.Problem("Connection failed: " + ex.Message);
-    }
-});
-
+app.UseFastEndpoints();
 app.Run();
 
 public partial class Program { }

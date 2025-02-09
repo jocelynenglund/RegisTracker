@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
-using RegisTrackerSystem;
+﻿using RegisTrackerSystem;
 using RegisTrackerSystem.Domain;
+using Shouldly;
 
 namespace RegisTrackerTests;
 
@@ -38,38 +38,36 @@ public class RegistrationSystemTests
         var result = sut.GetStatistics();
 
 
-        result.BatchCount[2000].Should().Be(repetitions);
+        result.BatchCount[2000].ShouldBe(repetitions);
     }
 
     [Theory]
     [InlineData(2)]
     [InlineData(3)]
-    public void WhenRegisteringInterestMoreThanOnce_ThrowsException(int repetitions)
+    public async Task WhenRegisteringInterestMoreThanOnce_ThrowsException(int repetitions)
     {
         var registerInterestCommand = new RegisterInterestCommand("aperson@example.com", 2000);
-        sut.Handle(registerInterestCommand);
+        await sut.Handle(registerInterestCommand);
         for (int i = 0; i < repetitions; i++)
         {
-            Action act = () => sut.Handle(registerInterestCommand);
-            act.Should().Throw<InvalidOperationException>()
-                .WithMessage("That email is already registered",
-                because: "because repeat submissions are not allowed");
+            var exception = Should.Throw<InvalidOperationException>(() => sut.Handle(registerInterestCommand));
+            exception.Message.ShouldBe("That email is already registered");
         }
     }
 
     [Fact]
-    public void WhenInterestIsRegisteredForASpecificYear_StatisticsShouldReflectThat()
+    public async Task WhenInterestIsRegisteredForASpecificYear_StatisticsShouldReflectThat()
     {
         var registerInterestCommand = new RegisterInterestCommand("person@example.com", 2000);
-        sut.Handle(registerInterestCommand);
+        await sut.Handle(registerInterestCommand);
         registerInterestCommand = new RegisterInterestCommand("anotherperson@example.com", 2001);
-        sut.Handle(registerInterestCommand);
+        await sut.Handle(registerInterestCommand);
 
         var statistics = sut.GetStatistics();
 
-        statistics.BatchCount[2000].Should().Be(1);
-        statistics.BatchCount[2001].Should().Be(1);
-        statistics.Total.Should().Be(2);
+        statistics.BatchCount[2000].ShouldBe(1);
+        statistics.BatchCount[2001].ShouldBe(1);
+        statistics.Total.ShouldBe(2);
 
     }
 
@@ -77,12 +75,13 @@ public class RegistrationSystemTests
 public class FakeRepository<T> : IRepository<T> where T : class
 {
     public List<T> Entities { get; } = new();
-    public void Save(T entity)
+    public Task Save(T entity)
     {
         if (!Entities.Contains(entity))
         {
             Entities.Add(entity);
         }
+        return Task.CompletedTask;
     }
     public IEnumerable<T> GetAll()
     {

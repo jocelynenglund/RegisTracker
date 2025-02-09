@@ -19,10 +19,10 @@ public class SQLRepository<T> : IRepository<T> where T : class, AggregateRoot
         return _dbSet.ToList();
     }
 
-    public void Save(T entity)
+    public async Task Save(T entity)
     {
         if (!_dbSet.Contains(entity))
             _dbSet.Add(entity);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }
