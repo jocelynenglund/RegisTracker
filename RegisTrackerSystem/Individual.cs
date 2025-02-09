@@ -1,7 +1,17 @@
 ﻿namespace RegisTrackerSystem;
 
-public record Individual()
+public class Individual: AggregateRoot
 {
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Individual()
+    {
+        
+    }
+    public Individual(string Email, Status Status): this()
+    {
+        this.Email = Email;
+        this.Status = Status;
+    }
     public Individual(List<DomainEvent> previousEvents) : this()
     {
         foreach (dynamic @event in previousEvents)
@@ -10,7 +20,7 @@ public record Individual()
         }
     }
 
-    public string Email { get; internal set; }
+    public string Email { get; internal set; } 
     public Status Status { get; internal set; }
 
     internal void RegisterInterest(string email, int year)
@@ -22,7 +32,7 @@ public record Individual()
     {
         if (Status != Status.InterestSubmitted)
         {
-            throw new InvalidOperationException(Status > Status.RegistrationConfirmed 
+            throw new InvalidOperationException(Status >= Status.RegistrationConfirmed 
                 ? "Email already confirmed"
                 :"Email not registered");
         }

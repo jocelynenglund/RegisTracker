@@ -1,4 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using RegisTrackerSystem;
+using Infrastructure;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,10 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-// Register FakeRepository for all IRepository<T> instances
-builder.Services.AddScoped(typeof(IRepository<>), typeof(FakeRepository<>));
-builder.Services.AddScoped<RegisTracker>();
+// Register the AppDbContext with the dependency injection container
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped(typeof(IRepository<>), typeof(SQLRepository<>));
+builder.Services.AddScoped<RegisTracker>();
 
 var app = builder.Build();
 
@@ -21,12 +26,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
 app.MapPost("/registerInterest", async (RegisterInterestCommand command, RegisTracker registracker) =>
 {
     try
     {
-        registracker.Handle(command);
+        await Task.Run(() => registracker.Handle(command)); // Add await to fix the async warning
         return Results.Ok("Interest registered successfully");
     }
     catch (InvalidOperationException e)
@@ -35,23 +39,19 @@ app.MapPost("/registerInterest", async (RegisterInterestCommand command, RegisTr
     }
 })
 .WithName("Register Interest");
+app.MapGet("/test-connection", async (AppDbContext context) =>
+{
+    try
+    {
+        await context.Database.CanConnectAsync();
+        return Results.Ok("Connection successful");
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem("Connection failed: " + ex.Message);
+    }
+});
 
 app.Run();
-
-public class FakeRepository<T> : IRepository<T> where T : class
-{
-    public List<T> Entities { get; } = new();
-    public void Save(T entity)
-    {
-        if (!Entities.Contains(entity))
-        {
-            Entities.Add(entity);
-        }
-    }
-    public IEnumerable<T> GetAll()
-    {
-        return Entities;
-    }
-}
 
 public partial class Program { }

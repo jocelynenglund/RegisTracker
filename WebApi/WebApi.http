@@ -9,3 +9,5 @@ Accept: application/json
   "year": 2000
 }
 ###
+
+GET {{WebApi_HostAddress}}/test-connection/

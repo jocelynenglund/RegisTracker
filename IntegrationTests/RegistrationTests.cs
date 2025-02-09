@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Bogus;
+using Microsoft.AspNetCore.Mvc.Testing;
 using RegisTrackerSystem;
 using Shouldly;
 using System.Net;
@@ -8,6 +9,7 @@ namespace IntegrationTests;
 public class RegistrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient _client;
+    private readonly Faker _faker = new();
     public RegistrationTests(WebApplicationFactory<Program> factory)
     {
         _client = factory.CreateClient();
@@ -16,8 +18,9 @@ public class RegistrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task WhenRegisteringInterest_ShouldReturnOk()
     {
+        var email = _faker.Internet.Email();
         var response = await _client.PostAsJsonAsync("/registerInterest",
-            new RegisterInterestCommand("jocelyn@englund.com", 2000));
+            new RegisterInterestCommand(email, 2000));
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
@@ -25,11 +28,12 @@ public class RegistrationTests : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task WhenRegisteringTwice_ShouldReturnBadRequest()
     {
+        var email = _faker.Internet.Email();
         var response = await _client.PostAsJsonAsync("/registerInterest",
-            new RegisterInterestCommand("jocelyn@englund.com", 2000));
+            new RegisterInterestCommand(email, 2000));
        
         response = await _client.PostAsJsonAsync("/registerInterest",
-            new RegisterInterestCommand("jocelyn@englund.com", 2000));
+            new RegisterInterestCommand(email, 2000));
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
     }

@@ -26,8 +26,3 @@ public class RegisTracker(IRepository<Individual> individuals, IRepository<Batch
         statistics.Save(statistic);
     }
 }
-public interface IRepository<T> where T : class
-{
-    void Save(T entity);
-    IEnumerable<T> GetAll();
-}
