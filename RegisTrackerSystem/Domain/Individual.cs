@@ -3,10 +3,11 @@
 public class Individual : AggregateRoot
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public Individual()
-    {
 
-    }
+    protected readonly List<DomainEvent> _uncommittedEvents = [];
+    public IReadOnlyCollection<DomainEvent> UncommittedEvents => _uncommittedEvents.AsReadOnly();
+    public void ClearUncommittedEvents() => _uncommittedEvents.Clear();
+    public Individual() { }
     public Individual(string Email, Status Status) : this()
     {
         this.Email = Email;
@@ -25,7 +26,7 @@ public class Individual : AggregateRoot
 
     internal void RegisterInterest(string email, int year)
     {
-        Apply(new InterestRegistered(email, year));
+        RaiseEvent(new InterestRegistered(email, year));
     }
 
     internal void ConfirmRegistration()
@@ -36,7 +37,19 @@ public class Individual : AggregateRoot
                 ? "Email already confirmed"
                 : "Email not registered");
         }
-        Apply(new RegistrationConfirmed(Email));
+
+        RaiseEvent(new RegistrationConfirmed(Email));
+    }
+
+    private void RaiseEvent(DomainEvent domainEvent)
+    {
+        _uncommittedEvents.Add(domainEvent);
+        Apply(domainEvent);
+    }
+
+    public void Apply(DomainEvent e)
+    {
+        Apply((dynamic)e);
     }
 
     private void Apply(InterestRegistered interestRegistered)

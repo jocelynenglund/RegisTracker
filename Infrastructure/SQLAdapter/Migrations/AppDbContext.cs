@@ -8,4 +8,13 @@ public class AppDbContext : DbContext
 
     public DbSet<Individual> Individuals { get; set; }
     public DbSet<BatchStatistics> BatchStatistics { get; set; }
+    public DbSet<EventEntity> EventStore { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        // Ignore DomainEvent type
+        modelBuilder.Ignore<DomainEvent>();
+    }
 }

@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RegisTrackerSystem;
+using RegisTrackerSystem.Domain;
+using System.Reflection;
 
 namespace Infrastructure;
 public static class ServiceCollectionExtensions
@@ -12,7 +14,10 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-        services.AddScoped(typeof(IRepository<>), typeof(SQLRepository<>));
+        services.AddScoped(typeof(IReadModelRepository<>), typeof(SQLRepository<>));
+        services.AddScoped(typeof(IRepository<>), typeof(EventSourcingRepository<>));
+     
+
         return services;
     }
 }

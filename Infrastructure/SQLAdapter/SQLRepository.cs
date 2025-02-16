@@ -5,7 +5,7 @@ using RegisTrackerSystem.Domain;
 
 namespace Infrastructure.SQLAdapter;
 
-public class SQLRepository<T> : IRepository<T> where T : class, AggregateRoot
+public class SQLRepository<T> : IReadModelRepository<T> where T : class, ReadModel
 {
     private readonly AppDbContext _context;
     private readonly DbSet<T> _dbSet;

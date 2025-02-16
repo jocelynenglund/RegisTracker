@@ -16,7 +16,7 @@ namespace RegisTrackerTests;
 
 public class RegistrationSystemTests
 {
-    private readonly FakeRepository<Individual> fakeIndividualRepository = new();
+    private readonly FakeEventStore fakeIndividualRepository = new();
     private readonly FakeRepository<BatchStatistics> fakeBatchStatisticsRepository = new();
     private readonly RegisTracker sut;
     public RegistrationSystemTests()
@@ -72,7 +72,7 @@ public class RegistrationSystemTests
     }
 
 }
-public class FakeRepository<T> : IRepository<T> where T : class
+public class FakeRepository<T> : IReadModelRepository<T> where T : class
 {
     public List<T> Entities { get; } = new();
     public Task Save(T entity)
@@ -84,6 +84,23 @@ public class FakeRepository<T> : IRepository<T> where T : class
         return Task.CompletedTask;
     }
     public IEnumerable<T> GetAll()
+    {
+        return Entities;
+    }
+}
+
+public class FakeEventStore : IRepository<Individual>
+{
+    public List<Individual> Entities { get; } = new();
+    public Task Save(Individual entity)
+    {
+        if (!Entities.Contains(entity))
+        {
+            Entities.Add(entity);
+        }
+        return Task.CompletedTask;
+    }
+    public IEnumerable<Individual> GetAll()
     {
         return Entities;
     }

@@ -1,5 +1,5 @@
 ﻿namespace RegisTrackerSystem.Domain;
-public class BatchStatistics : AggregateRoot
+public class BatchStatistics : ReadModel
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public BatchStatistics()

@@ -2,7 +2,7 @@
 
 namespace RegisTrackerSystem;
 public record RegisterInterestCommand(string Email, int Year);
-public class RegisTracker(IRepository<Individual> individuals, IRepository<BatchStatistics> statistics)
+public class RegisTracker(IRepository<Individual> individuals, IReadModelRepository<BatchStatistics> statistics)
 {
     public const string RegistrationSuccess  = "Registration created successfully";
     public const string RegistrationErrorExisting = "That email is already registered";
@@ -19,10 +19,10 @@ public class RegisTracker(IRepository<Individual> individuals, IRepository<Batch
         {
             throw new InvalidOperationException(RegistrationErrorExisting);
         }
-        await individuals.Save(new Individual()
-        {
-            Email = interest.Email,
-        });
+        var individual = new Individual();
+
+        individual.RegisterInterest(interest.Email, interest.Year);
+        await individuals.Save(individual);
 
         var statistic = statistics.GetAll().FirstOrDefault(x => x.Year ==  interest.Year) 
             ?? new BatchStatistics(interest.Year, 0);
